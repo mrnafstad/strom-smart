@@ -1,6 +1,7 @@
 <template>
     <div class="input">
-        <label :for="label">{{ label }}</label>
+        <label :for="label">{{ label }}
+        </label>
         <input
             v-model="value"
             :type="type"
@@ -14,7 +15,6 @@
 
 <script setup lang="ts">
 import { ref, watch } from 'vue';
-
 
 const props = defineProps<{
     modelValue: string | number | null,
@@ -35,6 +35,8 @@ watch(value, () => {
     }
     emit('update:modelValue', value.value)
 })
+
+
 </script>
 
 <style scoped lang="scss">

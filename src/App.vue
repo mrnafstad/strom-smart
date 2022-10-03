@@ -1,6 +1,11 @@
 <script setup lang="ts">
 import StromCalculator from './components/StromCalculator.vue'
+import SettingsDrawer from './components/SettingsDrawer.vue';
+import Button from './components/Button.vue'
+import { ref } from 'vue';
 const APP_TITLE = "StrømSmart"
+
+const showSettings = ref(false)
 
 /**
  * Kanskje bruke elvia sitt nettleie api etter hvert?
@@ -11,14 +16,24 @@ const APP_TITLE = "StrømSmart"
   <div class="strom-smart__main">
     <h2>
       {{
-          APP_TITLE
+      APP_TITLE
       }}
     </h2>
     <StromCalculator />
+    <Button
+      class="strom-smart__main__settings-toggle"
+      @click="showSettings = true"
+    >
+      Settings
+    </Button>
+    <SettingsDrawer
+      :showSettings="showSettings"
+      @close-settings="showSettings = false"
+    />
   </div>
 </template>
 
-<style>
+<style lang="scss">
 body {
   margin: 0;
 }
@@ -32,6 +47,12 @@ body {
   flex-direction: column;
   align-items: center;
   color: snow;
+
+  &__settings-toggle {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+  }
 }
 
 h2 {

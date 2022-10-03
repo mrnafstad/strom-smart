@@ -24,7 +24,7 @@
                     label="Spotpris denne timen"
                 />
             </div>
-            <span>Sluttpris strøm: {{ sluttPris }}</span>
+            <span>Sluttpris strøm: {{ sluttPris.toFixed(2) }} {{ prisEnhet}}</span>
         </div>
         <div class="calculator__col">
             <Input
@@ -32,29 +32,17 @@
                 type="number"
                 label="kWh denne timen"
             />
-            <span>Pris denne timen: {{ prisTime }}</span>
+            <span>Pris denne timen: {{ prisTime.toFixed(2) }} {{ prisEnhet }}</span>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
 import Input from './Input.vue';
-import { computed, ref } from 'vue';
-const snitSpotPrice = ref<number>(200)
-const spotPrisTime = ref<number>(300)
-const startGrense = ref<number>(70)
-const prosentStottes = ref<number>(0.9)
+import { usePowerPriceCalculator, useMVAPowerPrices } from '../composables/usePowerPriceCalculator'
 
-const sluttPris = computed(() => {
-    const stottes = snitSpotPrice.value - startGrense.value
-    return spotPrisTime.value - (stottes) * prosentStottes.value
-})
-
-const kwH = ref<number>(1)
-
-const prisTime = computed(() => {
-    return sluttPris.value * kwH.value
-})
+const { prisEnhet, prisTime, sluttPris, startGrense, spotPrisTime, snitSpotPrice, prosentStottes, kwH } = usePowerPriceCalculator()
+const { includeMVAInAveragePrice, includeMVAInCurrentPrice } = useMVAPowerPrices()
 
 /**
  * entsoe sender nok data i euro/ Mwh
